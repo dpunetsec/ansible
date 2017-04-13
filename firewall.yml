@@ -1,0 +1,26 @@
+---
+
+# to run this playbook: ansible-playbook -i hosts firewall.yml
+
+- hosts: firewall_hosts
+  become: yes
+
+  vars:
+    iptables_packages:
+    - iptables
+    - iptables-services
+
+  tasks:
+
+    - name: Stop and disable firewalld
+      service:
+        name: firewalld
+        state: stopped
+        enabled: false
+
+    - name: Install iptables
+      yum:
+        name={{ item }} state=present
+      with_items: "{{ iptables_packages }}"
+
+...
