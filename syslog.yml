@@ -1,0 +1,19 @@
+---
+
+# to run this playbook: ansible-playbook -i hosts syslog.yml
+
+- hosts: syslog_hosts
+  become: yes
+
+  tasks:
+
+    - name: Remove rsyslog
+      yum: name="rsyslog" state=absent
+
+    - name: Install syslog-ng
+      yum: name="syslog-ng" state=installed
+
+    - name: Start syslog-ng
+      systemd: state=started name=syslog-ng
+
+...
